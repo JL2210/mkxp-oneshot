@@ -33,7 +33,7 @@ class MkxpConan(ConanFile):
         "platform": ["standalone", "steam"],
     }
     default_options = (
-        "platform=standalone",
+        "platform=steam",
         "boost:without_test=True",
         "cygwin_installer:packages=xxd",
         # Avoid dead url bitrot in cygwin_installer
@@ -43,10 +43,12 @@ class MkxpConan(ConanFile):
     def build_requirements(self):
         if tools.os_info.is_windows:
             self.build_requires("cygwin_installer/2.9.0@bincrafters/stable")
+            print("windowstime")
 
     def requirements(self):
         if self.options.platform == "steam":
-            self.requires("steamworks/1.42@eliza/stable")
+            #self.requires("steamworks/1.42@eliza/stable")
+            print("windowstime")
         if tools.os_info.is_linux:
             # Overrides
             self.requires("sqlite3/3.29.0")
@@ -58,9 +60,10 @@ class MkxpConan(ConanFile):
     def configure(self):
         if tools.os_info.is_windows:
             # ???
-            self.options.openal.shared = True
+            self.options["openal"].shared = True
             # Fix linker error in SDL_sound fork with SDL2
-            self.options.sdl2.shared = True
+            # self.options["sdl2"].shared = True
+            print("windows time")
 
     def build_configure(self):
         cmake = CMake(self)
@@ -79,7 +82,7 @@ class MkxpConan(ConanFile):
             }):
                 self.build_configure()
         else:
-            self.build_configure()
+            self.build_configure()      
 
     def package(self):
         self.copy("*", dst="bin", src="bin")
