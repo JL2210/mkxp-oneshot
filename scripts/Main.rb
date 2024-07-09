@@ -23,7 +23,7 @@ begin
   $GDC = false
   # Make scene object (title screen)
   $scene = Scene_Title.new
-  Oneshot.allow_exit false
+  Oneshot.allow_exit true
   Oneshot.exiting false
 
 #  x = Oneshot.textinput("Foo Bar")

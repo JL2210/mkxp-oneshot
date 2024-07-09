@@ -13,6 +13,10 @@
 *.sln
 *.user
 *.tlog
+*.log
+*.pdb
+*.ipdb
+*.obj
 
 .vs/
 bin/

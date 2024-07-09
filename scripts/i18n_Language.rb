@@ -60,7 +60,11 @@ class Language
       else
         rv = string
       end
-      dbg_print(string + " -> " + rv)
+	  
+	  if rv == nil
+	    return string
+	  end
+      #dbg_print(string + " -> " + rv)
       return String.new(rv)
     end
 

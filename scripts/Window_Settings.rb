@@ -75,6 +75,7 @@ class Window_Settings
   end
 
   def initialize
+    Language.loadFontMap
     @viewport = Viewport.new(0, 0, 640, 480)
     @bg = Sprite.new(@viewport)
     @bg.bitmap = Bitmap.new(640, 480)

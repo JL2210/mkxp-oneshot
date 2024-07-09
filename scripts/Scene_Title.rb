@@ -54,8 +54,8 @@ class Scene_Title
        @sprite.bitmap = RPG::Cache.title($data_system.title_name)
  	end
 	
-    @sprite.zoom_x = 2.0
-    @sprite.zoom_y = 2.0
+    @sprite.zoom_x = 1.0
+    @sprite.zoom_y = 1.0
     # Create/render menu options
     @menu = Sprite.new
     @menu.z += 1
@@ -110,7 +110,7 @@ class Scene_Title
     @cursor.bitmap.dispose
     @cursor.dispose
 	@window_settings_title.dispose
-    Audio.bgm_fade(60)
+    #Audio.bgm_fade(60)
     Graphics.transition(60)
     # Run automatic change for BGM and BGS set with map
     $game_map.autoplay

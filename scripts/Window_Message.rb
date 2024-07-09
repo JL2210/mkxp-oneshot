@@ -24,6 +24,8 @@ class Window_Message < Window_Selectable
 
     @text_pause = 0
     @blip = 0
+	
+	@draw_letter_timer = 1
 
     # Text drawing flags
     @text = nil
@@ -205,6 +207,12 @@ class Window_Message < Window_Selectable
     # Don't do anything if we're done
     return if !@drawing_text
 
+    @draw_letter_timer -= 1
+    if @draw_letter_timer > 0
+	  return
+    end
+    @draw_letter_timer = 2
+	  
     # Get 1 text character in c (loop until unable to get text)
     while ((c = @text.slice!(0)) != nil)
       # \n

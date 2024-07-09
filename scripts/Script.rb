@@ -54,7 +54,7 @@ module Script
     return false
   end
 
-  def self.start_bruteforce
+  def self.start_plight_timer
     $game_oneshot.bruteforce_start = Graphics.frame_count
   end
 
@@ -80,20 +80,14 @@ module Script
     end
   end
 
-  def self.bruteforce_vars
+  def self.plight_timer_vars
     if($game_oneshot.bruteforce_start == nil)
       $game_oneshot.bruteforce_start = Graphics.frame_count
     end
     time_passed = Graphics.frame_count - $game_oneshot.bruteforce_start
-    counts_tried = time_passed / (2 * 60)
-    digit1 = counts_tried % 10;
-    digit2 = ((counts_tried % 100) - digit1) / 10
-    digit3 = ((counts_tried % 1000) - (digit2 * 10) - digit1) / 100
-    digit4 = ((counts_tried % 10000) - (digit3 * 100) - (digit2 * 10) - digit1) / 1000
-    digit5 = ((counts_tried % 100000) - (digit4 * 1000) - (digit3 * 100) - (digit2 * 10) - digit1) / 10000
-    $game_variables[26] = digit5
-    $game_variables[27] = digit4
-    $game_variables[28] = digit3
+    seconds = time_passed / 60
+    digit1 = seconds % 60
+    digit2 = (seconds - digit1) / 60
     $game_variables[29] = digit2
     $game_variables[30] = digit1
   end
