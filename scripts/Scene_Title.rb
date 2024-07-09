@@ -32,6 +32,11 @@ class Scene_Title
     new_game #unless load
     # Make system object
     $game_system = Game_System.new
+
+    if File.exists?("igt.ini")
+      $game_temp.igt_timer_visible = true
+    end
+
     # Skip title screen if debug mode (or demo, but not GDC)
     if $debug || ($demo && !$GDC) || save_exists
       $game_map.update
@@ -41,6 +46,7 @@ class Scene_Title
     end
     load_perma_flags
 	Window_Settings.load_settings
+    Oneshot.allow_exit true
 	
     @window_settings_title = Window_Settings.new
     # Make title graphic
@@ -54,8 +60,17 @@ class Scene_Title
        @sprite.bitmap = RPG::Cache.title($data_system.title_name)
  	end
 	
+	# check for debug file to add debug items
+	if File.exists?("debug_tester.dat")
+		# debug save
+		$game_party.gain_item(54, 1)
+		# plight skip
+		$game_party.gain_item(82, 1)
+	end
+	
     @sprite.zoom_x = 1.0
     @sprite.zoom_y = 1.0
+	
     # Create/render menu options
     @menu = Sprite.new
     @menu.z += 1
@@ -216,9 +231,12 @@ class Scene_Title
   # * Command: Continue
   #--------------------------------------------------------------------------
   def command_continue
+    # Reset frame count for measuring play time
+    Graphics.frame_count = 0
     # Play decision SE
     Audio.se_play('Audio/SE/title_decision.wav')
     # Update map (run parallel process event)
+	Oneshot.allow_exit false
     $game_map.update
     # Switch to map screen
     $scene = Scene_Map.new

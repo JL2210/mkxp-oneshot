@@ -16,7 +16,8 @@ module Script
 
   def self.is_name_swear
     test_string = $game_oneshot.player_name.downcase
-    if ["fuck", "shit", "ass", "cock", "damn", "penis", "tiddy", "titty", "cunt", "fag", "whore"].any? { |swear| test_string.include? swear }
+    list_of_swears = tr("NAME_SWEARS").to_str.split(",")
+    if list_of_swears.any? { |swear| test_string.include? swear.downcase }
       return true
     end
     return false
@@ -24,7 +25,8 @@ module Script
 
   def self.is_name_niko
     test_string = $game_oneshot.player_name.downcase
-    if test_string == "niko"
+    list_of_niko_names = tr("NAME_NIKOS").to_str.split(",")
+    if list_of_niko_names.any? { |niko_name| test_string == niko_name.downcase }
       return true
     end
     return false
@@ -32,7 +34,8 @@ module Script
 
   def self.is_name_like_niko
     test_string = $game_oneshot.player_name.downcase
-    if ["nico", "nikko", "nicco", "nikoh", "nicoh"].any? { |name| test_string == name }
+    list_of_niko_like_names = tr("NAMES_LIKE_NIKO").to_str.split(",")
+    if list_of_niko_like_names.any? { |niko_like_name| test_string == niko_like_name.downcase }
       return true
     end
     return false
@@ -40,7 +43,8 @@ module Script
 
   def self.is_name_like_mom_dad
     test_string = $game_oneshot.player_name.downcase
-    if ["mom", "dad", "mommy", "daddy", "mama", "papa"].any? { |name| test_string == name }
+    list_of_names_like_mom_dad = tr("NAMES_LIKE_MOMDAD").to_str.split(",")
+    if list_of_names_like_mom_dad.any? { |momdad_name| test_string == momdad_name.downcase }
       return true
     end
     return false
@@ -48,7 +52,8 @@ module Script
 
   def self.is_name_gross
     test_string = $game_oneshot.player_name.downcase
-    if ["poo", "pee", "fart", "stinky", "piss", "shit", "slimy"].any? { |name| test_string == name }
+    list_of_gross_names = tr("NAMES_GROSS").to_str.split(",")
+    if list_of_gross_names.any? { |gross_name| test_string == gross_name.downcase }
       return true
     end
     return false
@@ -71,12 +76,16 @@ module Script
   end
 
   def self.skip_bruteforce
-    $game_oneshot.bruteforce_start -= 62800*2*60
+    $game_oneshot.bruteforce_start -= 63014*2*60
   end
 
   def self.lose_all_items
     for i in 1..99
-      $game_party.lose_item(i, 99)
+		#skip debug testing items
+		if i == 54 or i == 81 or i == 82
+			next
+		end
+		$game_party.lose_item(i, 99)
     end
   end
 
@@ -555,12 +564,14 @@ module Script
     portal_path = Oneshot::GAME_PATH + "/Oneshot/BigPortal"
 	case numb
 	when 1
-	  return File.exists?(portal_path + "/keyB.txt")
+	  return (File.exists?(portal_path + "/keyB.txt") or File.exists?(portal_path + "/Portal1/keyB.txt"))
 	when 2
-	  return File.exists?(portal_path + "/keyG.txt")
+	  return (File.exists?(portal_path + "/keyG.txt") or File.exists?(portal_path + "/Portal2/keyG.txt"))
 	when 3
-	  return File.exists?(portal_path + "/keyR.txt")
+	  return (File.exists?(portal_path + "/keyR.txt") or File.exists?(portal_path + "/Portal3/keyR.txt"))
 	end
+	
+	
     return false
   end
 
