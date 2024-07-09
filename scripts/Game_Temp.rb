@@ -67,6 +67,8 @@ class Game_Temp
   attr_accessor :menus_visible
   attr_accessor :countdown_password
   attr_accessor :igt_timer_visible
+  attr_accessor :igt_timer_final_time
+  attr_accessor :igt_timer_stopped
   #--------------------------------------------------------------------------
   # * Object Initialization
   #--------------------------------------------------------------------------
@@ -127,6 +129,8 @@ class Game_Temp
     @menus_visible = false
     @countdown_password = ""
     @igt_timer_visible = false
+	@igt_timer_stopped = false
+	@igt_timer_final_time = 0
   end
 
   def bgm_fadein(game_system)

@@ -791,3 +791,8 @@ def activate_balcony?(ypos)
     $game_player.direction == 8 &&
     Input.trigger?(Input::ACTION) && !$game_system.map_interpreter.running? && !$game_temp.menus_visible
 end
+
+def stop_igt
+  $game_temp.igt_timer_stopped = true
+  $game_temp.igt_timer_final_time = Graphics.frame_count
+end

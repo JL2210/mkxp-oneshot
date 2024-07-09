@@ -267,6 +267,9 @@ class Game_Player < Game_Character
 
   # Footsteps
   def emit_footstep
+    if $game_switches[113]
+	  return
+	end
     return unless $game_temp.footstep_sfx
     tag = $game_map.terrain_tag(@x, @y) - 1
     if tag >= 0 && tag < $game_temp.footstep_sfx.size 

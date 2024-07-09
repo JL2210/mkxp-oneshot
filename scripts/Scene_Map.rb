@@ -103,11 +103,16 @@ class Scene_Map
   #--------------------------------------------------------------------------
   def update
     if $game_temp.igt_timer_visible && (Graphics.frame_count != nil)
-      total_sec = Graphics.frame_count / Graphics.frame_rate
+	  if $game_temp.igt_timer_stopped
+	    frame_count = $game_temp.igt_timer_final_time
+	  else
+	    frame_count = Graphics.frame_count
+	  end
+      total_sec = frame_count / Graphics.frame_rate
       hour = total_sec / 60 / 60
       min = total_sec / 60 % 60
       sec = total_sec % 60
-      millisec = ((Graphics.frame_count * 1000) / Graphics.frame_rate) % 1000
+      millisec = ((frame_count * 1000) / Graphics.frame_rate) % 1000
       time_string = sprintf("%02d:%02d:%02d.%03d", hour, min, sec, millisec)
 
       @in_game_timer.bitmap.fill_rect(0, 0, 140, 30, Color.new(0, 0, 0, 128))

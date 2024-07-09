@@ -181,7 +181,7 @@ void Config::read(int argc, char *argv[])
 
 	//Hardcode some ini/version settings
 	rgssVersion = 1;
-	game.title = "OneShot Pancakes";
+	game.title = "OneShot: The Pancake Episode";
 	game.scripts = "Data/xScripts.rxdata";
 	defScreenW = 640;
 	defScreenH = 480;
