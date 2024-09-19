@@ -33,6 +33,9 @@ struct ID \
 	explicit ID(GLuint gl = 0)  \
 	    : gl(gl)  \
 	{}  \
+	~ID() = default; \
+	ID(ID&&) = default; \
+	ID(const ID&) = default; \
 	ID &operator=(const ID &o)  \
 	{  \
 		gl = o.gl;  \

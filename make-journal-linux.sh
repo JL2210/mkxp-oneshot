@@ -9,6 +9,7 @@ source_path="$1"
 output_dir="$2"
 venv="$(mktemp -d)"
 workpath="$(mktemp -d)"
+journal_linux_name=_______
 
 function atexit {
   [ -n "$venv" ] && rm -rf "$venv"
@@ -26,8 +27,19 @@ pip install --upgrade pip
 pip install pyqt5 pyinstaller
 
 # Create standalone python distribution
-pyinstaller --onefile \
-	    --distpath "$output_dir" \
-	    --workpath "$workpath" \
-	    --specpath="$source_path/journal/unix" \
-	    "$source_path/journal/unix/journal-linux.spec"
+pyi-makespec --onefile \
+	     --specpath="$source_path/journal/unix" \
+	     "$source_path/journal/unix/journal.py" \
+             --paths="." \
+             --add-data="images:images" \
+             --add-data="qt.conf:." \
+             --exclude-module='libgio-*' \
+             --exclude-module='libglib-*' \
+             --exclude-module='libsystemd.*' \
+             --exclude-module='librt.*' \
+	     --name="$journal_linux_name" \
+
+pyinstaller --distpath="$output_dir" \
+	    --workpath="$workpath" \
+	    "$source_path/journal/unix/$journal_linux_name.spec" \
+

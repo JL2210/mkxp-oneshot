@@ -91,9 +91,10 @@ void
 raiseDisposedAccess(VALUE self)
 {
 	const char *klassName = RTYPEDDATA_TYPE(self)->wrap_struct_name;
-	char buf[32];
+	char buf[32 + 1];
 
-	strncpy(buf, klassName, sizeof(buf));
+	strncpy(buf, klassName, sizeof(buf)-1);
+	buf[sizeof(buf)-1] = '\0';
 	buf[0] = tolower(buf[0]);
 
 	rb_raise(getRbData()->exc[RGSS], "disposed %s", buf);

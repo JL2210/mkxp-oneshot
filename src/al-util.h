@@ -36,6 +36,9 @@ struct ID \
 	explicit ID(ALuint al = 0)  \
 	    : al(al)  \
 	{}  \
+        ~ID() = default; \
+        ID(ID&&) = default; \
+        ID(const ID&) = default; \
 	ID &operator=(const ID &o)  \
 	{  \
 		al = o.al;  \

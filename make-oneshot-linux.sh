@@ -5,7 +5,7 @@ cd `dirname $0`
 
 # User-configurable variables.
 linux_version="0.1.0"
-make_threads=8
+make_threads=$(nproc)
 oneshot_id=420530
 ONESHOT_PATH=$HOME/.local/share/Steam/steamapps/common/OneShot
 STEAMWORKS_PATH=$(realpath ..)/steamworks
@@ -32,16 +32,30 @@ make -j${make_threads} > oneshot.make.out
 # Compile steamshim.
 echo -e "-> ${cyan}Compile steamshim...${color_reset}"
 cd steamshim_parent
+rm -rf build
 mkdir build
 cd build
-cmake -DSTEAMWORKS_PATH=${STEAMWORKS_PATH} .. > steamshim.cmake.out
+cmake -DSTEAMWORKS_PATH=${STEAMWORKS_PATH} -DDEBUG=ON .. > steamshim.cmake.out
 cp "$STEAMWORKS_PATH/redistributable_bin/linux64/libsteam_api.so" .
 make -j${make_threads} > steamshim.make.out
 cd ../..
 
 # Compile Journal.
 echo -e "-> ${cyan}Compile journal...${color_reset}"
-pyinstaller journal/unix/journal.spec --windowed
+rm -rf dist
+journal_name=_______
+
+pyi-makespec --specpath="journal/unix" \
+	     "journal/unix/journal.py" \
+	     --paths="." \
+	     --add-data="images:images" \
+	     --add-data="qt.conf:." \
+	     --name="$journal_name" \
+	     --icon="assets/icon_journal.icns" \
+	     --icon="assets/icon_journal.ico" \
+	     --osx-bundle-identifier="APPL" \
+
+pyinstaller "journal/unix/$journal_name.spec"
 
 # Compile scripts.
 echo -e "-> ${cyan}Compile xScripts.rxdata...${color_reset}"
@@ -56,10 +70,13 @@ echo "$oneshot_id" > "$ONESHOT_PATH/steam_appid.txt"
 
 # Copy libraries.
 echo -e "-> ${cyan}Install OneShot libraries to Steam directory...${color_reset}"
+rm -rf libs
 mkdir libs
 ldd oneshot | ruby libraries.rb
 ldd steamshim_parent/build/steamshim | ruby libraries.rb
 yes | cp libs/* "$ONESHOT_PATH"
+
+exit
 
 # Cleanup.
 echo -e "-> ${cyan}Cleanup files...${color_reset}"

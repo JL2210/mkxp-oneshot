@@ -33,9 +33,11 @@ contains(BINDING, NULL) {
 	CONFIG += BINDING_NULL
 }
 
-PKGCONFIG = sigc++-2.0 pixman-1 zlib sdl2 SDL2_image SDL2_ttf openal SDL_sound vorbisfile
+PKGCONFIG = sigc++-2.0 pixman-1 zlib sdl2 SDL2_image SDL2_ttf openal SDL2_sound vorbisfile
 
 unix {
+	QMAKE_CXXFLAGS += -Wall -Wextra
+	QMAKE_CFLAGS += -Wall -Wextra
 	CONFIG += c++11
 	PKGCONFIG += physfs
 	LIBS += -ldl
